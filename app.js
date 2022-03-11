@@ -1,36 +1,57 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
-const restaurantList = require('./restaurant.json')
+const mongoose = require('mongoose')
+const Restaurant = require('./models/restaurant')
 
 const app = express()
 const port = 3000
+
+mongoose.connect('mongodb://localhost/restaurant-list')
+const db = mongoose.connection
+
+db.on('error', () => {
+  console.log('mongodb error')
+})
+
+db.once('open', () => {
+  console.log('mongodb connected')
+})
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-  res.render('index', { restaurants: restaurantList.results })
+  Restaurant.find()
+    .lean()
+    .then(restaurants => res.render('index', { restaurants }))
+    .catch(error => console.log(error))
 })
 
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim()
-  const keywords = keyword.split(',') 
-  const restaurants = []
+  const keywords = keyword.split(',')
+  let conditions = []
 
   keywords.forEach((word) => {
-    for (let restaurant of restaurantList.results)
-      if (restaurant.name.toLowerCase().includes(word.toLowerCase()) || restaurant.category.toLowerCase().includes(word.toLowerCase()) && !restaurants.includes(restaurant)) {
-        restaurants.push(restaurant)
-      }
+    conditions = conditions.concat([
+      { name: { $regex: word, $options: 'i' } },
+      { category: { $regex: word, $options: 'i' } }
+    ])
   })
 
-  res.render('index', { restaurants: restaurants, keyword })
+  Restaurant.find({ $or: conditions })
+    .lean()
+    .then(restaurants => res.render('index', { restaurants, keyword }))
+    .catch(error => console.log(error))
 })
 
 app.get('/restaurants/:restaurant_id', (req, res) => {
-  const restaurant = restaurantList.results.find(restaurant => restaurant.id.toString() === req.params.restaurant_id)
-  res.render('show', { restaurant: restaurant })
+  const id = req.params.restaurant_id
+  Restaurant.findById(id)
+    .lean()
+    .then(restaurant => res.render('show', { restaurant }))
+    .catch(error => console.log(error))
 })
 
 app.listen(port, () => {
