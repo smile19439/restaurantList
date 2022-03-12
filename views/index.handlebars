@@ -20,13 +20,17 @@
 <div class="container mt-5">
   <div class="row ">
     <div class="col-md-10 col-12 mx-auto">
+      <div class="d-flex justify-content-end">
+        <a href="/create" class="btn btn-info">Create</a>
+      </div>
+      
       <div class="row row-cols-1 row-cols-md-3">
 
         {{#each restaurants}}
         <div class="mb-5">
           <a href="/restaurants/{{this._id}}" class="col text-secondary">
             <div class="card mb-1">
-              <img class="card-img-top" src="{{this.image}}" alt="Sababa 沙巴巴中東美食">
+              <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
               <div class="card-body p-3">
                 <h6 class="card-title mb-1">{{this.name}}</h6>
 
