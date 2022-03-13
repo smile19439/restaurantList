@@ -2,6 +2,7 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
 const Restaurant = require('./models/restaurant')
+const getSortCondition = require('./models/sortCondition')
 
 const app = express()
 const port = 3000
@@ -17,15 +18,25 @@ db.once('open', () => {
   console.log('mongodb connected')
 })
 
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
+app.engine('handlebars', exphbs({
+  defaultLayout: 'main',
+  helpers: {
+    isEquel: function (a, b) {
+      return a === b
+    }
+  }
+}))
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
+  const sortValue = req.query.sort
+  const sortCondition = JSON.parse(getSortCondition(sortValue))
   Restaurant.find()
     .lean()
-    .then(restaurants => res.render('index', { restaurants }))
+    .sort(sortCondition)
+    .then(restaurants => res.render('index', { restaurants, sortValue }))
     .catch(error => console.log(error))
 })
 

@@ -35,6 +35,11 @@ header {
   color: #9b4b4b;
 }
 
+.sort {
+  color: #9b4b4b;
+  background-color: #fce2cf;
+}
+
 .form-control::placeholder {
   color: #aaaaaa;
   font-size: 0.8rem;
