@@ -1,6 +1,8 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
+const methodOverride = require('method-override')
+
 const Restaurant = require('./models/restaurant')
 const getSortCondition = require('./models/sortCondition')
 
@@ -29,6 +31,7 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 app.get('/', (req, res) => {
   const sortValue = req.query.sort
@@ -85,7 +88,7 @@ app.get('/restaurants/:restaurant_id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/restaurants/:restaurant_id/edit', (req, res) => {
+app.put('/restaurants/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
   const { name, name_en, category, location, google_map, rating, phone, image, description } = req.body
   return Restaurant.findById(id)
@@ -105,7 +108,7 @@ app.post('/restaurants/:restaurant_id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/restaurants/:restaurant_id/delete', (req, res) => {
+app.delete('/restaurants/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
   Restaurant.findById(id)
     .then(restaurant => restaurant.remove())
