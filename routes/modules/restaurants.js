@@ -8,8 +8,8 @@ router.get('/create', (req, res) => {
 })
 
 router.post('/new', (req, res) => {
-  const { name, name_en, category, location, google_map, rating, phone, image, description } = req.body
-  return Restaurant.create({ name, name_en, category, location, google_map, rating, phone, image, description })
+  return Restaurant
+    .create(req.body)
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
@@ -32,18 +32,9 @@ router.get('/:restaurant_id/edit', (req, res) => {
 
 router.put('/:restaurant_id', (req, res) => {
   const id = req.params.restaurant_id
-  const { name, name_en, category, location, google_map, rating, phone, image, description } = req.body
   return Restaurant.findById(id)
     .then(restaurant => {
-      restaurant.name = name
-      restaurant.name_en = name_en
-      restaurant.category = category
-      restaurant.location = location
-      restaurant.google_map = google_map
-      restaurant.rating = rating
-      restaurant.phone = phone
-      restaurant.image = image
-      restaurant.description = description
+      restaurant = Object.assign(restaurant, req.body)
       return restaurant.save()
     })
     .then(() => res.redirect(`/restaurants/${id}`))

@@ -1,23 +1,27 @@
 function getSortCondition(value) {
+  let sortCondition = ''
+
   if (value === '2') {
-    const sortCondition = JSON.stringify({ name: 'desc' })
-    return sortCondition
+    sortCondition = JSON.stringify({ name: 'desc' })
+
   } else if (value === '3') {
-    const sortCondition = JSON.stringify({ category: 'asc' })
-    return sortCondition
+    sortCondition = JSON.stringify({ category: 'asc' })
+
   } else if (value === '4') {
-    const sortCondition = JSON.stringify({ category: 'desc' })
-    return sortCondition
+    sortCondition = JSON.stringify({ category: 'desc' })
+
   } else if (value === '5') {
-    const sortCondition = JSON.stringify({ location: 'asc' })
-    return sortCondition
+    sortCondition = JSON.stringify({ location: 'asc' })
+
   } else if (value === '6') {
-    const sortCondition = JSON.stringify({ location: 'desc' })
-    return sortCondition
+    sortCondition = JSON.stringify({ location: 'desc' })
+
   } else {
-    const sortCondition = JSON.stringify({ name: 'asc' })
-    return sortCondition
+    sortCondition = JSON.stringify({ name: 'asc' })
+
   }
+
+  return sortCondition
 }
 
 module.exports = getSortCondition

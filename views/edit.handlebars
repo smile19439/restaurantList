@@ -8,7 +8,7 @@
             <i class="fas fa-store-alt"></i>
             店名：
           </span>
-          <input type="text" placeholder="請輸入餐廳名稱" name="name" class="form-control" value="{{restaurant.name}}">
+          <input type="text" placeholder="請輸入餐廳名稱" name="name" class="form-control" value="{{restaurant.name}}" required>
         </div>
 
         <div class="input-group mb-3">
@@ -49,7 +49,7 @@
             <i class="fas fa-star fa-xs"></i>
             Rating：
           </span>
-          <input type="text" placeholder="請輸入餐廳評分" name="rating" class="form-control" value="{{restaurant.rating}}">
+          <input type="number" step="0.1" min="0" max="5" placeholder="請輸入餐廳評分" name="rating" class="form-control" value="{{restaurant.rating}}">
         </div>
 
         <div class="input-group mb-3">
@@ -57,7 +57,7 @@
             <i class="fas fa-mobile-alt pr-2"></i>
             電話：
           </span>
-          <input type="tel" placeholder="請輸入餐廳電話" name="phone" class="form-control" value="{{restaurant.phone}}">
+          <input type="tel" placeholder="請輸入餐廳電話" name="phone" class="form-control" value="{{restaurant.phone}}" pattern="[0-9+-]*" >
         </div>
 
         <div class="input-group mb-3">
