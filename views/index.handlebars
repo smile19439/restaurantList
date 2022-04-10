@@ -17,7 +17,8 @@
     </div>
   </div>
 
-  <div class="dropdown mr-3 align-self-end">
+  <div class="mr-3 align-self-end d-flex flex-column">
+    <a href="/restaurants/create" class="btn btn-create mb-2 ml-auto">Create</a>
     <form action="/">
       <select name="sort" class="btn  w-100 text-left px-3 sort" onchange="this.form.submit()">
         <option value="1" {{#if (isEquel  sortValue '1')}}selected{{/if}}>店名 (A -> Z)</option>

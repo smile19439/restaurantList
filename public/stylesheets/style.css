@@ -14,9 +14,9 @@ header {
   position: relative;
   z-index: -1;
   margin: -5px;
-  height: 360px;
+  height: 200px;
   background: #dddddd center center url('https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/5720/restaurants-list-cover.jpg');
-  background-size: cover;
+  background-size: 80%;
   filter: blur(3px);
 }
 
@@ -27,12 +27,17 @@ header {
   border-radius: 8px;
   padding: 20px 30px;
   border: 0;
-  margin-top: -60px;
+  margin-top: -25px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
 .search-bar .search-bar-inner h4 {
   color: #9b4b4b;
+}
+
+.btn-create {
+  color: #9b4b4b;
+  background-color: #fce2cf;  
 }
 
 .sort {
