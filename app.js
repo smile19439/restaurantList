@@ -4,6 +4,8 @@ const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const flash = require('connect-flash')
 
+require('dotenv').config()
+
 const routes = require('./routes')
 const userPassport = require('./config/passport')
 require('./config/mongoose')
