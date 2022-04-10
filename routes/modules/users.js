@@ -21,12 +21,23 @@ router.get('/register', (req, res) => {
 
 router.post('/register', (req, res) => {
   const { name, email, password, ConfirmPassword } = req.body
+  let errors = []
+
+  if (!email || !password || !ConfirmPassword) {
+    errors.push({ message: 'Email, password, confirm password 為必填欄位。' })
+  }
+  if (password !== ConfirmPassword) {
+    errors.push({ message: '輸入的密碼與確認密碼不相符。' })
+  }
+  if (errors.length > 0) {
+    return res.render('register', { errors, name, email, password, ConfirmPassword })
+  }
 
   User.findOne({ email })
     .then(user => {
       if (user) {
-        console.log('the email is used')
-        return res.render('register', { name, email, password, ConfirmPassword })
+        errors.push({ message: '輸入的email已被註冊過囉！' })
+        return res.render('register', { errors, name, email, password, ConfirmPassword })
       }
       return bcrypt
         .genSalt(10)
@@ -40,6 +51,7 @@ router.post('/register', (req, res) => {
 
 router.get('/logout', (req, res) => {
   req.logOut()
+  req.flash('success_msg', '您已成功登出')
   res.redirect('/users/login')
 })
 
