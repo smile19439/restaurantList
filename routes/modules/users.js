@@ -6,6 +6,7 @@ const passport = require('passport')
 
 const User = require('../../models/user')
 
+// 登入
 router.get('/login', (req, res) => {
   return res.render('login')
 })
@@ -16,6 +17,7 @@ router.post('/login', passport.authenticate('local', {
   failureRedirect: '/users/login'
 }))
 
+// 註冊
 router.get('/register', (req, res) => {
   return res.render('register')
 })
@@ -24,6 +26,7 @@ router.post('/register', (req, res) => {
   const { name, email, password, ConfirmPassword } = req.body
   let errors = []
 
+  // 判斷錯誤訊息
   if (!email || !password || !ConfirmPassword) {
     errors.push({ message: 'Email, password, confirm password 為必填欄位。' })
   }
@@ -34,6 +37,7 @@ router.post('/register', (req, res) => {
     return res.render('register', { errors, name, email, password, ConfirmPassword })
   }
 
+  // 確認有無建立過資料
   User.findOne({ email })
     .then(user => {
       if (user) {
@@ -50,6 +54,7 @@ router.post('/register', (req, res) => {
     .catch(error => console.log(error))
 })
 
+// 登出
 router.get('/logout', (req, res) => {
   req.logOut()
   req.flash('success_msg', '您已成功登出')

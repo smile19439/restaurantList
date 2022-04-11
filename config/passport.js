@@ -9,6 +9,7 @@ module.exports = app => {
   app.use(passport.initialize())
   app.use(passport.session())
 
+  // 本地策略
   passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
     User.findOne({ email })
       .then(user => {
@@ -26,6 +27,7 @@ module.exports = app => {
       .catch(err => done(err))
   }))
 
+  // facebook策略
   passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_clientID,
     clientSecret: process.env.FACEBOOK_clientSecret,
@@ -48,10 +50,12 @@ module.exports = app => {
       })
   }))
 
+  // 序列化
   passport.serializeUser((user, done) => {
     done(null, user.id)
   })
 
+  // 反序列化
   passport.deserializeUser((id, done) => {
     User.findById(id)
       .lean()

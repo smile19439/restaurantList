@@ -4,6 +4,7 @@ const router = express.Router()
 const Restaurant = require('../../models/restaurant')
 const getSortCondition = require('../../models/sortCondition')
 
+// 總覽
 router.get('/', (req, res) => {
   const sortValue = req.query.sort
   const sortCondition = JSON.parse(getSortCondition(sortValue))
@@ -15,11 +16,13 @@ router.get('/', (req, res) => {
     .catch(error => console.log(error))
 })
 
+// 查詢
 router.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim()
   const keywords = keyword.split(',')
   let conditions = []
 
+  // 合併查詢條件
   keywords.forEach((word) => {
     conditions = conditions.concat([
       { name: { $regex: word, $options: 'i' } },

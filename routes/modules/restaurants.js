@@ -3,6 +3,7 @@ const router = express.Router()
 
 const Restaurant = require('../../models/restaurant')
 
+// 新建
 router.get('/create', (req, res) => {
   return res.render('create')
 })
@@ -19,6 +20,7 @@ router.post('/create', (req, res) => {
     .catch(error => console.log(error))
 })
 
+// 餐廳detail
 router.get('/:restaurant_id', (req, res) => {
   const userId = req.user._id
   const _id = req.params.restaurant_id
@@ -28,6 +30,7 @@ router.get('/:restaurant_id', (req, res) => {
     .catch(error => console.log(error))
 })
 
+// 編輯
 router.get('/:restaurant_id/edit', (req, res) => {
   const userId = req.user._id
   const _id = req.params.restaurant_id
@@ -42,7 +45,7 @@ router.put('/:restaurant_id', (req, res) => {
   const _id = req.params.restaurant_id
   if (!req.body.name) {
     req.flash('warning_msg', '店名為必填欄位！')
-    return res.redirect(`/restaurants/${_id}/edit` )
+    return res.redirect(`/restaurants/${_id}/edit`)
   }
   Restaurant.findOne({ _id, userId })
     .then(restaurant => {
@@ -53,6 +56,7 @@ router.put('/:restaurant_id', (req, res) => {
     .catch(error => console.log(error))
 })
 
+// 刪除
 router.delete('/:restaurant_id', (req, res) => {
   const userId = req.user._id
   const _id = req.params.restaurant_id
