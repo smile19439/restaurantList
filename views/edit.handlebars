@@ -2,13 +2,14 @@
   <div class="container mt-3">
     <div class="row">
       <div class="col-12 col-md-10 mx-auto">
+        {{> message}}
 
         <div class="input-group mb-3">
           <span class="text-secondary">
             <i class="fas fa-store-alt"></i>
             店名：
           </span>
-          <input type="text" placeholder="請輸入餐廳名稱" name="name" class="form-control" value="{{restaurant.name}}" required>
+          <input type="text" placeholder="請輸入餐廳名稱" name="name" class="form-control" value="{{restaurant.name}}">
         </div>
 
         <div class="input-group mb-3">

@@ -38,6 +38,7 @@ userPassport(app)
 app.use(flash())
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.error = req.flash('error')
   res.locals.success_msg = req.flash('success_msg')
   res.locals.warning_msg = req.flash('warning_msg')
   next()
