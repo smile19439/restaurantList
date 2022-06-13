@@ -44,8 +44,10 @@ router.put('/:restaurant_id', (req, res) => {
   const userId = req.user._id
   const _id = req.params.restaurant_id
   if (!req.body.name) {
-    req.flash('warning_msg', '店名為必填欄位！')
-    return res.redirect(`/restaurants/${_id}/edit`)
+    const errors = [{ message: '店名為必填欄位！' }]
+    restaurant = req.body
+    restaurant._id = _id
+    return res.render('edit', { restaurant, errors })
   }
   Restaurant.findOne({ _id, userId })
     .then(restaurant => {
