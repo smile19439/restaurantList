@@ -2,22 +2,22 @@ function getSortCondition(value) {
   let sortCondition = ''
 
   if (value === '2') {
-    sortCondition = JSON.stringify({ name: 'desc' })
+    sortCondition = { name: 'desc' }
 
   } else if (value === '3') {
-    sortCondition = JSON.stringify({ category: 'asc' })
+    sortCondition = { category: 'asc' }
 
   } else if (value === '4') {
-    sortCondition = JSON.stringify({ category: 'desc' })
+    sortCondition = { category: 'desc' }
 
   } else if (value === '5') {
-    sortCondition = JSON.stringify({ location: 'asc' })
+    sortCondition = { location: 'asc' }
 
   } else if (value === '6') {
-    sortCondition = JSON.stringify({ location: 'desc' })
+    sortCondition = { location: 'desc' }
 
   } else {
-    sortCondition = JSON.stringify({ name: 'asc' })
+    sortCondition = { name: 'asc' }
 
   }
 

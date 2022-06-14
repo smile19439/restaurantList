@@ -7,7 +7,7 @@ const getSortCondition = require('../../models/sortCondition')
 // 總覽
 router.get('/', (req, res) => {
   const sortValue = req.query.sort
-  const sortCondition = JSON.parse(getSortCondition(sortValue))
+  const sortCondition = getSortCondition(sortValue)
   const userId = req.user._id
   Restaurant.find({ userId })
     .lean()
