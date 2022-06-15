@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const Restaurant = require('../../models/restaurant')
-const getSortCondition = require('../../models/sortCondition')
+const { getSortCondition } = require('../../helpers/restaurant-helpers')
 
 // 總覽
 router.get('/', (req, res) => {

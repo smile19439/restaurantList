@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const Restaurant = require('../../models/restaurant')
-
+const { getRestaurantData } = require('../../helpers/restaurant-helpers')
 // 新建
 router.get('/create', (req, res) => {
   return res.render('create')
@@ -10,12 +10,14 @@ router.get('/create', (req, res) => {
 
 router.post('/create', (req, res) => {
   const userId = req.user._id
-  if (!req.body.name) {
-    req.body.errors = [{ message: '店名為必填欄位！' }]
-    return res.render('create', req.body)
+  const restaurant = getRestaurantData(req.body)
+
+  if (!restaurant.name) {
+    restaurant.errors = [{ message: '店名為必填欄位！' }]
+    return res.render('create', restaurant)
   }
   return Restaurant
-    .create(Object.assign(req.body, { userId }))
+    .create(Object.assign(restaurant, { userId }))
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
@@ -45,13 +47,13 @@ router.put('/:restaurant_id', (req, res) => {
   const _id = req.params.restaurant_id
   if (!req.body.name) {
     const errors = [{ message: '店名為必填欄位！' }]
-    restaurant = req.body
+    restaurant = getRestaurantData(req.body)
     restaurant._id = _id
     return res.render('edit', { restaurant, errors })
   }
   Restaurant.findOne({ _id, userId })
     .then(restaurant => {
-      restaurant = Object.assign(restaurant, req.body)
+      restaurant = Object.assign(restaurant, getRestaurantData(req.body))
       return restaurant.save()
     })
     .then(() => res.redirect(`/restaurants/${_id}`))
