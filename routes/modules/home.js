@@ -19,16 +19,14 @@ router.get('/', (req, res) => {
 // 查詢
 router.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim()
-  const keywords = keyword.split(',')
-  let conditions = []
-
   // 合併查詢條件
-  keywords.forEach((word) => {
-    conditions = conditions.concat([
-      { name: { $regex: word, $options: 'i' } },
-      { category: { $regex: word, $options: 'i' } }
-    ])
-  })
+  const conditions = keyword.split(',')
+    .reduce((acc, cur) => {
+      return acc.concat([
+        { name: { $regex: cur, $options: 'i' } },
+        { category: { $regex: cur, $options: 'i' } }
+      ])
+    }, [])
 
   Restaurant.find({ $or: conditions })
     .lean()
