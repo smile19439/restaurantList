@@ -19,7 +19,13 @@
 
   <div class="mr-3 align-self-end d-flex flex-column">
     <a href="/restaurants/create" class="btn btn-create mb-2 ml-auto">Create</a>
-    <form action="/">
+    <form action="/" class="d-flex">
+      <select name="filter" class="btn w-100 text-left px-3 sort mr-2" onchange="this.form.submit()">
+        <option>所有類別</option>
+        {{#each categories}}
+        <option {{#if this.isSelected}}selected{{/if}}>{{this.category}}</option>
+        {{/each}}
+      </select>
       <select name="sort" class="btn  w-100 text-left px-3 sort" onchange="this.form.submit()">
         <option value="1" {{#if (isEquel  sortValue '1')}}selected{{/if}}>店名 (A -> Z)</option>
         <option value="2" {{#if (isEquel  sortValue '2')}}selected{{/if}}>店名 (Z -> A)</option>

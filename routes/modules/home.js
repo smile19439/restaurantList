@@ -7,12 +7,33 @@ const { getSortCondition } = require('../../helpers/restaurant-helpers')
 // 總覽
 router.get('/', (req, res, next) => {
   const sortValue = req.query.sort
+  const filterValue = req.query.filter
   const sortCondition = getSortCondition(sortValue)
   const userId = req.user._id
   Restaurant.find({ userId })
     .lean()
     .sort(sortCondition)
-    .then(restaurants => res.render('index', { restaurants, sortValue }))
+    .then(restaurants => {
+      // 取得所有餐廳的類別
+      let categories = [...new Set(restaurants.map(({ category }) => category))]
+        .sort((a, b) => {
+          if (a < b) {
+            return -1
+          }
+          if (a > b) {
+            return 1
+          }
+          return 0
+        })
+        .map(element => ({ category: element }))
+
+      if (filterValue && filterValue !== '所有類別') {
+        restaurants = restaurants.filter(element => element.category === filterValue)
+        const index = categories.findIndex(element => element.category === filterValue)
+        categories[index].isSelected = true
+      }
+      return res.render('index', { restaurants, sortValue, categories, filterValue })
+    })
     .catch(error => next(error))
 })
 
