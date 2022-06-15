@@ -5,7 +5,7 @@ const Restaurant = require('../../models/restaurant')
 const { getSortCondition } = require('../../helpers/restaurant-helpers')
 
 // 總覽
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   const sortValue = req.query.sort
   const sortCondition = getSortCondition(sortValue)
   const userId = req.user._id
@@ -13,11 +13,11 @@ router.get('/', (req, res) => {
     .lean()
     .sort(sortCondition)
     .then(restaurants => res.render('index', { restaurants, sortValue }))
-    .catch(error => console.log(error))
+    .catch(error => next(error))
 })
 
 // 查詢
-router.get('/search', (req, res) => {
+router.get('/search', (req, res, next) => {
   const keyword = req.query.keyword.trim()
   // 合併查詢條件
   const conditions = keyword.split(',')
@@ -31,7 +31,7 @@ router.get('/search', (req, res) => {
   Restaurant.find({ $or: conditions })
     .lean()
     .then(restaurants => res.render('index', { restaurants, keyword }))
-    .catch(error => console.log(error))
+    .catch(error => next(error))
 })
 
 module.exports = router

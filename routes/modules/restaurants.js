@@ -8,7 +8,7 @@ router.get('/create', (req, res) => {
   return res.render('create')
 })
 
-router.post('/create', (req, res) => {
+router.post('/create', (req, res, next) => {
   const userId = req.user._id
   const restaurant = getRestaurantData(req.body)
 
@@ -19,30 +19,30 @@ router.post('/create', (req, res) => {
   return Restaurant
     .create(Object.assign(restaurant, { userId }))
     .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
+    .catch(error => next(error))
 })
 
 // 餐廳detail
-router.get('/:restaurant_id', (req, res) => {
+router.get('/:restaurant_id', (req, res, next) => {
   const userId = req.user._id
   const _id = req.params.restaurant_id
   Restaurant.findOne({ _id, userId })
     .lean()
     .then(restaurant => res.render('show', { restaurant }))
-    .catch(error => console.log(error))
+    .catch(error => next(error))
 })
 
 // 編輯
-router.get('/:restaurant_id/edit', (req, res) => {
+router.get('/:restaurant_id/edit', (req, res, next) => {
   const userId = req.user._id
   const _id = req.params.restaurant_id
   Restaurant.findOne({ _id, userId })
     .lean()
     .then(restaurant => res.render('edit', { restaurant }))
-    .catch(error => console.log(error))
+    .catch(error => next(error))
 })
 
-router.put('/:restaurant_id', (req, res) => {
+router.put('/:restaurant_id', (req, res, next) => {
   const userId = req.user._id
   const _id = req.params.restaurant_id
   if (!req.body.name) {
@@ -57,17 +57,17 @@ router.put('/:restaurant_id', (req, res) => {
       return restaurant.save()
     })
     .then(() => res.redirect(`/restaurants/${_id}`))
-    .catch(error => console.log(error))
+    .catch(error => next(error))
 })
 
 // 刪除
-router.delete('/:restaurant_id', (req, res) => {
+router.delete('/:restaurant_id', (req, res, next) => {
   const userId = req.user._id
   const _id = req.params.restaurant_id
   Restaurant.findOne({ _id, userId })
     .then(restaurant => restaurant.remove())
     .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
+    .catch(error => next(error))
 })
 
 module.exports = router

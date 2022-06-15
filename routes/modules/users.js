@@ -22,7 +22,7 @@ router.get('/register', (req, res) => {
   return res.render('register')
 })
 
-router.post('/register', (req, res) => {
+router.post('/register', (req, res, next) => {
   const { name, email, password, ConfirmPassword } = req.body
   let errors = []
 
@@ -49,9 +49,9 @@ router.post('/register', (req, res) => {
         .then(salt => bcrypt.hash(password, salt))
         .then(hash => User.create({ name, email, password: hash }))
         .then(res.redirect('/users/login'))
-        .catch(error => console.log(error))
+        .catch(error => next(error))
     })
-    .catch(error => console.log(error))
+    .catch(error => next(error))
 })
 
 // 登出
